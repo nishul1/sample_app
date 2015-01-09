@@ -11,6 +11,9 @@ class UsersSignupTest < ActionDispatch::IntegrationTest
 									password_confirmation: "bar"}
 		end
 		assert_template 'users/new'
+		assert_select 'div#error_explanation'
+		assert_select 'div.field_with_errors'
+		assert_select "li", text: "Name can't be blank"
 	end
 
 	test "valid signup information" do
@@ -22,5 +25,8 @@ class UsersSignupTest < ActionDispatch::IntegrationTest
 													password_confirmation: "password"}
 			end
 		assert_template 'users/show'
+		assert_select 'div.alert-success'
+		assert_select "div", text: "Welcome to the Sample App!"
+		assert_not_nil flash
 	end
 end
