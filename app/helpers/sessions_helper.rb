@@ -4,8 +4,23 @@ module SessionsHelper
 		session[:user_id] = user.id
 	end
 
+	# Remembers a user for a persistent session
+	def remember(user)
+		user.remember  # Invokes the 'remember' CLASS method - creating and storing into the DB the hashed remember_token
+		cookies.permanent.signed[:user_id] = user.id
+		cookies.permanent[:remember_token] = user.remember_token
+	end
+
 	def current_user
-		@current_user ||= User.find_by(id: session[:user_id])
+		if (user_id = session[:user_id])		# Checks to see if user is logged in temporarily by checking for existence of session cookie
+			@current_user ||= User.find_by(id: user_id)
+		elsif (user_id = cookies.signed[:user_id])    # Checks to see if user is logged in permanently by checking for existence of persistent signed cookie
+			user = User.find_by(id: user_id)
+			if user && user.authenticated?(cookies[:remember_token])   # Check that hash of remember token in browser matches remember_digest stored in the browser
+				log_in user
+				@current_user = user
+			end
+		end
 	end
 
 	def logged_in?
@@ -17,4 +32,8 @@ module SessionsHelper
 		session.delete(:user_id)
 		@current_user = nil
 	end
+
+
+
+
 end
