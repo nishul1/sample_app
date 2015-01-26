@@ -15,6 +15,7 @@ module SessionsHelper
 		if (user_id = session[:user_id])		# Checks to see if user is logged in temporarily by checking for existence of session cookie
 			@current_user ||= User.find_by(id: user_id)
 		elsif (user_id = cookies.signed[:user_id])    # Checks to see if user is logged in permanently by checking for existence of persistent signed cookie
+			#raise	#If the tests still pass, this branch is currently untested...
 			user = User.find_by(id: user_id)
 			if user && user.authenticated?(cookies[:remember_token])   # Check that hash of remember token in browser matches remember_digest stored in the browser
 				log_in user
