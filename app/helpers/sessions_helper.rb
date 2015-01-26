@@ -27,8 +27,16 @@ module SessionsHelper
 		!current_user.nil?
 	end
 
+	# Forgets a persistent session
+	def forget(user)
+		user.forget 		# Calls the USER CLASS method 'forget' to set remember_digest to nil
+		cookies.delete(:user_id)
+		cookies.delete(:remember_token)
+	end
+
 	#Logs a user out
 	def log_out
+		forget(current_user)
 		session.delete(:user_id)
 		@current_user = nil
 	end
