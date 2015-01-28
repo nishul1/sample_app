@@ -6,7 +6,7 @@ module SessionsHelper
 
 	# Remembers a user for a persistent session
 	def remember(user)
-		user.remember  # Invokes the 'remember' CLASS method - creating and storing into the DB the hashed remember_token
+		user.remember  # Invokes the 'remember' INSTANCE method - creating and storing into the DB the hashed remember_token
 		cookies.permanent.signed[:user_id] = user.id
 		cookies.permanent[:remember_token] = user.remember_token
 	end

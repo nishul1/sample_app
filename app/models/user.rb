@@ -9,18 +9,19 @@ class User < ActiveRecord::Base
 	has_secure_password
 	validates :password, length: { minimum: 6 }
 
-	#Returns the hash digest of the given string
-	def User.digest(string)
-		cost = ActiveModel::SecurePassword.min_cost ? BCrypt::Engine::MIN_COST :
-													  BCrypt::Engine.cost
-		BCrypt::Password.create(string, cost: cost)
-	end
+	class << self  # Identify that the following methods are CLASS methods.  They are still called via User.digest etc..
 
-	# Returns a random token
-	def User.new_token
-		SecureRandom.urlsafe_base64
+		# Class methods that returns the hash digest of the given string
+		def digest(string)
+			cost = ActiveModel::SecurePassword.min_cost ? BCrypt::Engine::MIN_COST : BCrypt::Engine.cost
+			BCrypt::Password.create(string, cost: cost)
+		end
+
+		# Returns a random token - CLASS method
+		def new_token
+			SecureRandom.urlsafe_base64
+		end
 	end
-		
 
 	# Places a remember token in user browser to remember user for persistent sessions
 	def remember
