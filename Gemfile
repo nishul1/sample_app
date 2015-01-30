@@ -5,6 +5,12 @@ source 'https://rubygems.org'
 gem 'rails', '4.2.0'
 # Use bcrypt to hash passwords
 gem 'bcrypt', '3.1.7'
+# Use faker for sample user generation
+gem 'faker',  '1.4.2'
+# Use will_paginate for pagination
+gem 'will_paginate',  '3.0.7'
+# Use bootstrap-will_paginate to style pagination
+gem 'bootstrap-will_paginate', '0.0.10'
 # Use Bootstrap for CSS
 gem 'bootstrap-sass', '3.2.0.0'
 # Use SCSS for stylesheets
