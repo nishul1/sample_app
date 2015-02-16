@@ -4,6 +4,7 @@ class UsersSignupTest < ActionDispatch::IntegrationTest
   
 	def setup
 		ActionMailer::Base.deliveries.clear
+		@user1 = users(:michael)
 	end
 
 	test "invalid signup information" do
@@ -35,6 +36,20 @@ class UsersSignupTest < ActionDispatch::IntegrationTest
 		# Ensure unactivated user can't log in
 		log_in_as(user)
 		assert_not is_logged_in?
+
+		# Index page
+		log_in_as(@user1)
+		get users_path
+		assert_template 'users/index'
+		assert_no_match user.name, response.body
+		delete logout_path
+		assert_not is_logged_in?
+
+
+		# Profile page
+		get user_path(user)
+		assert_redirected_to root_url
+
 
 		# Ensure user isn't activated and logged in with invalid token
 		get edit_account_activation_path("invalid_token")
