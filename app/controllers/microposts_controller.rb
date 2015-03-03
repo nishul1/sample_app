@@ -9,7 +9,7 @@ def create
 		redirect_to root_url
 	else
 		@feed_items = []
-		render 'static_pages/home'
+		render 'static_pages/home'		# Render directly as error message is lost if a request is made
 	end
 end
 
