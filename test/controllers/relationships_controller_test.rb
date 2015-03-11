@@ -14,4 +14,5 @@ class RelationshipsControllerTest < ActionController::TestCase
 			delete :destroy, id: relationships(:one)
 		end
 		assert_redirected_to login_url
+	end
 end
