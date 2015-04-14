@@ -51,7 +51,7 @@ class User < ActiveRecord::Base
 		update_attribute(:remember_digest, nil)
 	end
 	
-	# Activates an account
+	# Activates an account. Why update_column? Not clear - all it does in addition to update_attribute is to skip the callbacks.
 	def activate
 		update_columns(activated: true, activated_at: Time.zone.now)
 	end

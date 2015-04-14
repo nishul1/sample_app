@@ -16,4 +16,15 @@ class UsersProfileTest < ActionDispatch::IntegrationTest
 			assert_match micropost.content, response.body
 		end
 	end
+
+	test "stats count check" do
+		log_in_as(@user)
+		get root_path
+		assert_select 'a[href=?]', following_user_path(@user)
+		assert_select 'a[href=?]', followers_user_path(@user)
+		assert_select '#followers', @user.followers.count.to_s
+		assert_select '#following', @user.following.count.to_s
+
+	end
+
 end
